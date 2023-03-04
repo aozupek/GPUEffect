@@ -134,10 +134,11 @@ open class GPUEffect<T : GLSLProgram> @JvmOverloads constructor(
             GLES20.glEnableVertexAttribArray(program.attribPosition)
         }
         if (program.attribTextureCoordinate > -1) {
-            textureBuffer.rewind()
-            GLES20.glVertexAttribPointer(program.attribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,
-                    textureBuffer)
-            GLES20.glEnableVertexAttribArray(program.attribTextureCoordinate)
+            if (!overridenTextureCoordinates()) {
+                textureBuffer.rewind()
+                GLES20.glVertexAttribPointer(program.attribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, textureBuffer)
+                GLES20.glEnableVertexAttribArray(program.attribTextureCoordinate)
+            }
         }
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
         GLES20.glBindTexture(inputTexture.type, inputTexture.id)
@@ -161,6 +162,10 @@ open class GPUEffect<T : GLSLProgram> @JvmOverloads constructor(
     /** @inheritdoc */
     override fun onPreDraw() {
 
+    }
+
+    open fun overridenTextureCoordinates() : Boolean {
+        return false
     }
 
     open protected fun onPreDrawArrays() {
