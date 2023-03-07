@@ -32,7 +32,7 @@ import java.nio.ByteOrder
  */
 
 open class TwoInputEffect<T : TwoInputEffect.Program> @JvmOverloads constructor(
-        private var texture2: Texture? = null,
+        protected var texture2: Texture? = null,
         program: T
 ) : GPUEffect<T>(program) {
 
